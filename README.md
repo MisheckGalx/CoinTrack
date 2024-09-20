@@ -1,6 +1,6 @@
 # ALX WEB-Stack Portfolio: CoinTrack
 
-![CoinTrack Logo](https://via.placeholder.com/728x90.png?text=CoinTrack+Logo)
+![CoinTrack Logo](https://github.com/digreatbrian/CoinTrack/blob/mods/app/static/images/favicon.png)
 
 ## 📈 Your Personal Finance Tracker 📊
 
@@ -188,7 +188,7 @@ To install and run CoinTrack locally, follow these steps:
 ---
 ## 🖥️ Demo
 
-Soon live demo will be previewed here!
+[![Watch the video](https://img.youtube.com/vi/3DhNhOTZ5JE/0.jpg)](https://youtu.be/3DhNhOTZ5JE?si=Kx4VPZW1Po3fhMkT)
 ---
 
 ## 🌟 Future Enhancements
