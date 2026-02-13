@@ -12,7 +12,10 @@ login_manager = LoginManager()
 def create_app(name=__name__):
     from config import Config
 
-    app = Flask(name)
+    app = Flask(name, 
+            static_folder=os.path.join(app_dir, 'static'),
+            static_url_path='/static',
+            template_folder=os.path.join(app_dir, 'templates'))
 
     # Configuration
     app.config['SECRET_KEY'] = Config.SECRET_KEY
