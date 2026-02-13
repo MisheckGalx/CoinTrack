@@ -17,70 +17,81 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="{{ url_for('main.index') }}" class="logo">
-                <span class="logo-icon">💰</span>
-                CoinTrack
-            </a>
-            
-            <ul class="nav-links">
-                <li><a href="{{ url_for('main.index') }}" class="{% if request.endpoint == 'main.index' %}active{% endif %}">Dashboard</a></li>
-                <li><a href="{{ url_for('main.transactions') }}" class="{% if request.endpoint == 'main.transactions' %}active{% endif %}">Transactions</a></li>
-                <li><a href="{{ url_for('main.analytics') }}" class="{% if request.endpoint == 'main.analytics' %}active{% endif %}">Analytics</a></li>
-                <li><a href="{{ url_for('main.categories') }}" class="{% if request.endpoint == 'main.categories' %}active{% endif %}">Categories</a></li>
-            </ul>
-            
-            <div class="nav-cta">
-                {% if current_user.is_authenticated %}
-                    <a href="{{ url_for('main.add_transaction') }}" class="btn btn-primary">
-                        <span>➕ Add Transaction</span>
-                    </a>
-                    <a href="{{ url_for('main.logout') }}" class="btn btn-secondary">
-                        <span>Logout</span>
-                    </a>
-                {% else %}
-                    <a href="{{ url_for('main.login') }}" class="btn btn-secondary">
-                        <span>Login</span>
-                    </a>
-                    <a href="{{ url_for('main.register') }}" class="btn btn-primary">
-                        <span>Sign Up</span>
-                    </a>
-                {% endif %}
-            </div>
+
+{% macro safe_url(endpoint) %}
+    {%- set url = "#" -%}
+    {%- try -%}
+        {%- set url = url_for(endpoint) -%}
+    {%- except -%}
+        {# fallback to "#" if route doesn't exist #}
+    {%- endtry -%}
+    {{ url }}
+{% endmacro %}
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="{{ safe_url('main.index') }}" class="logo">
+            <span class="logo-icon">💰</span>
+            CoinTrack
+        </a>
+        
+        <ul class="nav-links">
+            <li><a href="{{ safe_url('main.index') }}" class="{% if request.endpoint == 'main.index' %}active{% endif %}">Dashboard</a></li>
+            <li><a href="{{ safe_url('main.transactions') }}" class="{% if request.endpoint == 'main.transactions' %}active{% endif %}">Transactions</a></li>
+            <li><a href="{{ safe_url('main.analytics') }}" class="{% if request.endpoint == 'main.analytics' %}active{% endif %}">Analytics</a></li>
+            <li><a href="{{ safe_url('main.categories') }}" class="{% if request.endpoint == 'main.categories' %}active{% endif %}">Categories</a></li>
+        </ul>
+        
+        <div class="nav-cta">
+            {% if current_user.is_authenticated %}
+                <a href="{{ safe_url('main.add_transaction') }}" class="btn btn-primary">
+                    <span>➕ Add Transaction</span>
+                </a>
+                <a href="{{ safe_url('main.logout') }}" class="btn btn-secondary">
+                    <span>Logout</span>
+                </a>
+            {% else %}
+                <a href="{{ safe_url('main.login') }}" class="btn btn-secondary">
+                    <span>Login</span>
+                </a>
+                <a href="{{ safe_url('main.register') }}" class="btn btn-primary">
+                    <span>Sign Up</span>
+                </a>
+            {% endif %}
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <!-- Flash Messages -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="container" style="padding-top: 2rem;">
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">
-                        <span>
-                            {% if category == 'success' %}✓{% elif category == 'error' %}✕{% else %}ℹ{% endif %}
-                        </span>
-                        <span>{{ message }}</span>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="container" style="padding-top: 2rem;">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    <span>
+                        {% if category == 'success' %}✓{% elif category == 'error' %}✕{% else %}ℹ{% endif %}
+                    </span>
+                    <span>{{ message }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
 
-    <!-- Main Content -->
-    <main>
-        {% block content %}{% endblock %}
-    </main>
+<!-- Main Content -->
+<main>
+    {% block content %}{% endblock %}
+</main>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 CoinTrack. Built with ❤️ by <a href="https://github.com/MisheckGalx" target="_blank">Misheck Gogo</a></p>
-        <p style="margin-top: 0.5rem; font-size: 0.9rem;">
-            Track your finances, achieve your goals.
-        </p>
-    </footer>
+<!-- Footer -->
+<footer>
+    <p>&copy; 2025 CoinTrack. Built with ❤️ by <a href="https://github.com/MisheckGalx" target="_blank">Misheck Gogo</a></p>
+    <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+        Track your finances, achieve your goals.
+    </p>
+</footer>
 
-    {% block extra_js %}{% endblock %}
+{% block extra_js %}{% endblock %}
 </body>
 </html>
