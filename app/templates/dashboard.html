@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - CoinTrack{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">Financial Dashboard</h1>
+        <p class="page-subtitle">Welcome back! Here's your financial overview.</p>
+    </div>
+
+    <!-- Statistics Grid -->
+    <div class="stats-grid">
+        <!-- Total Balance -->
+        <div class="stat-card">
+            <div class="stat-icon">💎</div>
+            <div class="stat-label">Total Balance</div>
+            <div class="stat-value">$12,450.00</div>
+            <div class="stat-change positive">
+                <span>↑</span>
+                <span>+12.5% from last month</span>
+            </div>
+        </div>
+
+        <!-- Income -->
+        <div class="stat-card income">
+            <div class="stat-icon">📈</div>
+            <div class="stat-label">Total Income</div>
+            <div class="stat-value">$8,200.00</div>
+            <div class="stat-change positive">
+                <span>↑</span>
+                <span>+8.2% from last month</span>
+            </div>
+        </div>
+
+        <!-- Expenses -->
+        <div class="stat-card expense">
+            <div class="stat-icon">📉</div>
+            <div class="stat-label">Total Expenses</div>
+            <div class="stat-value">$5,750.00</div>
+            <div class="stat-change negative">
+                <span>↓</span>
+                <span>-3.1% from last month</span>
+            </div>
+        </div>
+
+        <!-- Savings Rate -->
+        <div class="stat-card">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-label">Savings Rate</div>
+            <div class="stat-value">29.9%</div>
+            <div class="stat-change positive">
+                <span>↑</span>
+                <span>Great progress!</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-lg); margin-bottom: var(--spacing-2xl);">
+        <!-- Spending by Category -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Spending by Category</h2>
+            </div>
+            <div class="card-body">
+                <canvas id="categoryChart" height="300"></canvas>
+            </div>
+        </div>
+
+        <!-- Income vs Expenses -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Income vs Expenses</h2>
+            </div>
+            <div class="card-body">
+                <canvas id="incomeExpenseChart" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="card">
+        <div class="card-header flex-between">
+            <h2 class="card-title">Recent Transactions</h2>
+            <a href="{{ url_for('main.transactions') }}" class="btn btn-secondary btn-sm">View All</a>
+        </div>
+        <div class="card-body">
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Feb 12, 2025</td>
+                            <td>Salary Payment</td>
+                            <td>Income</td>
+                            <td><span class="badge badge-income">Income</span></td>
+                            <td style="color: var(--accent-green); font-weight: 600;">+$5,000.00</td>
+                        </tr>
+                        <tr>
+                            <td>Feb 11, 2025</td>
+                            <td>Grocery Shopping</td>
+                            <td>Food & Dining</td>
+                            <td><span class="badge badge-expense">Expense</span></td>
+                            <td style="color: var(--accent-red); font-weight: 600;">-$152.30</td>
+                        </tr>
+                        <tr>
+                            <td>Feb 10, 2025</td>
+                            <td>Electric Bill</td>
+                            <td>Utilities</td>
+                            <td><span class="badge badge-expense">Expense</span></td>
+                            <td style="color: var(--accent-red); font-weight: 600;">-$89.50</td>
+                        </tr>
+                        <tr>
+                            <td>Feb 9, 2025</td>
+                            <td>Freelance Project</td>
+                            <td>Income</td>
+                            <td><span class="badge badge-income">Income</span></td>
+                            <td style="color: var(--accent-green); font-weight: 600;">+$1,200.00</td>
+                        </tr>
+                        <tr>
+                            <td>Feb 8, 2025</td>
+                            <td>Netflix Subscription</td>
+                            <td>Entertainment</td>
+                            <td><span class="badge badge-expense">Expense</span></td>
+                            <td style="color: var(--accent-red); font-weight: 600;">-$15.99</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Spending by Category Chart
+    const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+    new Chart(categoryCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Food & Dining', 'Transportation', 'Utilities', 'Entertainment', 'Shopping', 'Others'],
+            datasets: [{
+                data: [1200, 450, 380, 290, 650, 480],
+                backgroundColor: [
+                    'rgba(124, 58, 237, 0.8)',
+                    'rgba(59, 130, 246, 0.8)',
+                    'rgba(6, 182, 212, 0.8)',
+                    'rgba(16, 185, 129, 0.8)',
+                    'rgba(245, 158, 11, 0.8)',
+                    'rgba(239, 68, 68, 0.8)'
+                ],
+                borderColor: [
+                    'rgba(124, 58, 237, 1)',
+                    'rgba(59, 130, 246, 1)',
+                    'rgba(6, 182, 212, 1)',
+                    'rgba(16, 185, 129, 1)',
+                    'rgba(245, 158, 11, 1)',
+                    'rgba(239, 68, 68, 1)'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#fff',
+                        padding: 15,
+                        font: {
+                            size: 12,
+                            family: "'DM Sans', sans-serif"
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Income vs Expenses Chart
+    const incomeExpenseCtx = document.getElementById('incomeExpenseChart').getContext('2d');
+    new Chart(incomeExpenseCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Income',
+                data: [7500, 8200, 7800, 8500, 9000, 8200],
+                backgroundColor: 'rgba(16, 185, 129, 0.8)',
+                borderColor: 'rgba(16, 185, 129, 1)',
+                borderWidth: 2,
+                borderRadius: 8
+            }, {
+                label: 'Expenses',
+                data: [5200, 5750, 5400, 6100, 6300, 5750],
+                backgroundColor: 'rgba(239, 68, 68, 0.8)',
+                borderColor: 'rgba(239, 68, 68, 1)',
+                borderWidth: 2,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#fff',
+                        padding: 15,
+                        font: {
+                            size: 12,
+                            family: "'DM Sans', sans-serif"
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: '#9ca3af',
+                        font: {
+                            family: "'DM Sans', sans-serif"
+                        },
+                        callback: function(value) {
+                            return '$' + value.toLocaleString();
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.05)'
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#9ca3af',
+                        font: {
+                            family: "'DM Sans', sans-serif"
+                        }
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

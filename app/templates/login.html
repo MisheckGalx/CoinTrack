@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Login - CoinTrack{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 500px; padding-top: 4rem; padding-bottom: 4rem;">
+    <div class="card" style="animation-delay: 0s;">
+        <div class="card-header" style="text-align: center; border-bottom: none;">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">💰</div>
+            <h1 class="card-title" style="font-size: 2rem; margin-bottom: 0.5rem;">Welcome Back</h1>
+            <p style="color: var(--gray-300);">Login to manage your finances</p>
+        </div>
+        
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('main.login') }}">
+                {{ form.hidden_tag() }}
+                
+                <div class="form-group">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-input", placeholder="your.email@example.com") }}
+                    {% if form.email.errors %}
+                        <div style="color: var(--accent-red); font-size: 0.85rem; margin-top: 0.5rem;">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.password.label(class="form-label") }}
+                    {{ form.password(class="form-input", placeholder="Enter your password") }}
+                    {% if form.password.errors %}
+                        <div style="color: var(--accent-red); font-size: 0.85rem; margin-top: 0.5rem;">
+                            {% for error in form.password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group" style="display: flex; align-items: center; justify-content: space-between;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        {{ form.remember(style="cursor: pointer;") }}
+                        <span style="color: var(--gray-300); font-size: 0.9rem;">Remember me</span>
+                    </label>
+                    <a href="#" style="color: var(--accent-cyan); text-decoration: none; font-size: 0.9rem;">Forgot password?</a>
+                </div>
+                
+                {{ form.submit(class="btn btn-primary", style="width: 100%; margin-top: 1rem;") }}
+            </form>
+            
+            <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--glass-border);">
+                <p style="color: var(--gray-300);">
+                    Don't have an account? 
+                    <a href="{{ url_for('main.register') }}" style="color: var(--accent-purple); text-decoration: none; font-weight: 600;">Sign up</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Features Section -->
+    <div style="margin-top: 3rem; text-align: center;">
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+            <div style="padding: 1rem;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📊</div>
+                <div style="color: var(--gray-300); font-size: 0.9rem;">Track Expenses</div>
+            </div>
+            <div style="padding: 1rem;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">💎</div>
+                <div style="color: var(--gray-300); font-size: 0.9rem;">Manage Budget</div>
+            </div>
+            <div style="padding: 1rem;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📈</div>
+                <div style="color: var(--gray-300); font-size: 0.9rem;">Financial Goals</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
