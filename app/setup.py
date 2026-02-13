@@ -12,7 +12,7 @@ login_manager = LoginManager()
 
 def create_app(name=__name__):
     """Create and configure the Flask app."""
-    from .config import Config
+    from config import Config
 
     # Determine app directory
     app_dir = os.path.dirname(os.path.abspath(__file__))
